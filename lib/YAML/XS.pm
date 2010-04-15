@@ -25,7 +25,7 @@
 package YAML::XS;
 use 5.008003;
 use strict;
-$YAML::XS::VERSION = '0.32';
+$YAML::XS::VERSION = '0.33';
 use base 'Exporter';
 
 @YAML::XS::EXPORT = qw(Load Dump);
@@ -185,9 +185,15 @@ are intended to work exactly like C<YAML.pm>'s corresponding functions.
 
 Ingy döt Net <ingy@cpan.org>
 
+=head1 MAINTAINERS
+
+Yuval Kogman <nothingmuch@woobling.org>
+
+Gisle Aas <gisle@ActiveState.com>
+
 =head1 COPYRIGHT
 
-Copyright (c) 2007, 2008. Ingy döt Net.
+Copyright (c) 2007, 2008, 2009, 2010. Ingy döt Net.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

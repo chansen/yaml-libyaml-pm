@@ -1,4 +1,9 @@
 ---
+version: 0.33
+date:    Wed Apr 14 17:57:10 PDT 2010
+changes:
+- Applied Gisle Aas' patch from https://rt.cpan.org/Ticket/Display.html?id=43115
+---
 version: 0.32
 date:    Mon Jan 12 11:23:55 IST 2009
 changes:
