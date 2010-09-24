@@ -852,8 +852,7 @@ dump_scalar(perl_yaml_dumper_t *dumper, SV *node, yaml_char_t *tag)
             strEQ(string, "true") ||
             strEQ(string, "false") ||
             strEQ(string, "null") ||
-            (SvTYPE(node) >= SVt_PVGV) ||
-            ( dumper->quote_number_strings && !SvNIOK(node) && looks_like_number(node) )
+            ( dumper->quote_number_strings && !SvNIOK(node) && SvPOK(node) && looks_like_number(node) )
         ) {
             style = YAML_SINGLE_QUOTED_SCALAR_STYLE;
         }
