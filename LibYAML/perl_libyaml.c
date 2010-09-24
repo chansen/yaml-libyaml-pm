@@ -857,14 +857,14 @@ dump_scalar(perl_yaml_dumper_t *dumper, SV *node, yaml_char_t *tag)
             style = YAML_SINGLE_QUOTED_SCALAR_STYLE;
         }
         else if (!SvUTF8(node)) {
-            const unsigned char *c = (const unsigned char *)string;
-            const unsigned char *e = c + string_len;
+            const U8 *c = (U8 *)string;
+            const U8 *e = c + string_len;
 
             while (c < e && NATIVE_IS_INVARIANT(*c))
                 c++;
 
-            if (c != e) {
-                SV *tmpsv = sv_mortalcopy(node);
+            if (c != e && !(UTF8_IS_START(*c) && is_utf8_string(c, e - c))) {
+                SV *tmpsv = sv_2mortal(newSVpvn(string, string_len));
                 sv_utf8_upgrade(tmpsv);
                 string = SvPV(tmpsv, string_len);
             }
