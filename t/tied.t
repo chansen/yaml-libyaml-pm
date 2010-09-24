@@ -1,22 +1,13 @@
-use t::TestYAMLTests;
-
-BEGIN {
-    if ($] < 5.010000) {
-        plan skip_all => 'needs perl 5.10 or higher';
-    }
-    else {
-        plan tests => 3;
-    }
-}
+use t::TestYAMLTests tests => 3;
 
 use Tie::Array;
 use Tie::Hash;
 
 my $yaml1 = <<'...';
 ---
-- 'foo'
-- 'bar'
-- 'baz'
+- foo
+- bar
+- baz
 ...
 
 {
@@ -29,9 +20,9 @@ my $yaml1 = <<'...';
 
 my $yaml2 = <<'...';
 ---
-bar: 'bar'
-baz: 'baz'
-foo: 'foo'
+bar: bar
+baz: baz
+foo: foo
 ...
 
 {
