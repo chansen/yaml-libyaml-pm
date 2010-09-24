@@ -852,16 +852,22 @@ dump_scalar(perl_yaml_dumper_t *dumper, SV *node, yaml_char_t *tag)
             strEQ(string, "true") ||
             strEQ(string, "false") ||
             strEQ(string, "null") ||
-            ( dumper->quote_number_strings && !SvNIOK(node) && SvPOK(node) && looks_like_number(node) )
+            ( dumper->quote_number_strings && !SvNIOK(node) && grok_number(string, string_len, NULL) )
         ) {
             style = YAML_SINGLE_QUOTED_SCALAR_STYLE;
         }
-        if (!SvUTF8(node)) {
-	    /* copy to new SV and promote to utf8 */
-	    SV *utf8sv = sv_mortalcopy(node);
+        else if (!SvUTF8(node)) {
+            const unsigned char *c = (const unsigned char *)string;
+            const unsigned char *e = c + string_len;
 
-	    /* get string and length out of utf8 */
-	    string = SvPVutf8(utf8sv, string_len);
+            while (c < e && NATIVE_IS_INVARIANT(*c))
+                c++;
+
+            if (c != e) {
+                SV *tmpsv = sv_mortalcopy(node);
+                sv_utf8_upgrade(tmpsv);
+                string = SvPV(tmpsv, string_len);
+            }
         }
     }
     yaml_scalar_event_initialize(
