@@ -473,6 +473,11 @@ set_dumper_options(perl_yaml_dumper_t *dumper)
         ((gv = gv_fetchpv("YAML::XS::QuoteNumericStrings", TRUE, SVt_PV)) &&
         SvTRUE(GvSV(gv)))
     );
+
+    dumper->sort_keys = (
+        ((gv = gv_fetchpv("YAML::XS::SortKeys", TRUE, SVt_IV)) &&
+        SvIV(GvSV(gv)))
+    );
 }
 
 /*
@@ -766,7 +771,10 @@ dump_hash(
         av_store(av, AvFILLp(av)+1, key); /* av_push(), really */
         len++;
     }
-    STORE_HASH_SORT;
+    if (dumper->sort_keys) {
+        STORE_HASH_SORT;
+    }
+
     for (i = 0; i < len; i++) {
         SV *key = av_shift(av);
         HE *he  = hv_fetch_ent(hash, key, 0, 0);

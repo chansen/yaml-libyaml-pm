@@ -14,6 +14,7 @@ use base 'Exporter';
 # $YAML::XS::LoadCode = 0;
 
 $YAML::XS::QuoteNumericStrings = 1;
+$YAML::XS::SortKeys = 1;
 
 use YAML::XS::LibYAML qw(Load Dump);
 

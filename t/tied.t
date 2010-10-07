@@ -1,4 +1,4 @@
-use t::TestYAMLTests tests => 4;
+use t::TestYAMLTests tests => 5;
 
 use Tie::Array;
 use Tie::Hash;
@@ -52,6 +52,28 @@ foo:
     is Dump(\%hv), $yaml3, 'Dumping tied hash works';
 }
 
+my $yaml4 = <<'...';
+---
+D: 1
+C: 2
+B: 3
+A: 4
+...
+
+SKIP: {
+    eval { require Tie::IxHash; 1; }
+      or skip 'Test requires Tie::IxHash', 1;
+
+    tie my %hv, 'Tie::IxHash';
+    $hv{D} = 1;
+    $hv{C} = 2;
+    $hv{B} = 3;
+    $hv{A} = 4;
+
+    local $YAML::XS::SortKeys = 0;
+    is Dump(\%hv), $yaml4, 'Dumping tied hash works (SortKeys = 0)';
+}
+
 {
     package Tie::OneIterationOnly;
     my @KEYS = qw(bar baz foo);
@@ -76,13 +98,13 @@ foo:
     }
 }
 
-my $yaml4 = <<'...';
+my $yaml5 = <<'...';
 --- {}
 ...
 
 {
     tie my %hv, 'Tie::OneIterationOnly';
-    is Dump(\%hv), $yaml4, 'Dumping tied hash works';
+    is Dump(\%hv), $yaml5, 'Dumping tied hash works';
 }
 
 

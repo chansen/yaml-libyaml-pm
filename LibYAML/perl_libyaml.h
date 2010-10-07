@@ -38,6 +38,7 @@ typedef struct {
     HV *shadows;
     int dump_code;
     int quote_number_strings;
+    int sort_keys;
 } perl_yaml_dumper_t;
 
 static SV *
