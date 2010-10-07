@@ -619,6 +619,7 @@ dump_node(perl_yaml_dumper_t *dumper, SV *node)
     yaml_char_t *tag = NULL;
     const char *class = NULL;
 
+    SvGETMAGIC(node);
     if (SvTYPE(node) == SVt_PVGV) {
         SV **svr;
         tag = (yaml_char_t *)TAG_PERL_PREFIX "glob";
@@ -828,7 +829,6 @@ dump_scalar(perl_yaml_dumper_t *dumper, SV *node, yaml_char_t *tag)
         plain_implicit = quoted_implicit = 1;
     }
 
-    SvGETMAGIC(node);
     if (!SvOK(node)) {
         string = "~";
         string_len = 1;

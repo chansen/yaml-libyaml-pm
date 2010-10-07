@@ -1,4 +1,4 @@
-use t::TestYAMLTests tests => 3;
+use t::TestYAMLTests tests => 4;
 
 use Tie::Array;
 use Tie::Hash;
@@ -33,6 +33,25 @@ foo: foo
     is Dump(\%hv), $yaml2, 'Dumping tied hash works';
 }
 
+my $yaml3 = <<'...';
+---
+bar: foo
+baz:
+- 0
+- 1
+- 2
+foo:
+  bar: baz
+...
+
+{
+    tie my %hv, 'Tie::StdHash';
+    $hv{foo} = { bar => 'baz' };
+    $hv{bar} = 'foo';
+    $hv{baz} = [0, 1, 2];
+    is Dump(\%hv), $yaml3, 'Dumping tied hash works';
+}
+
 {
     package Tie::OneIterationOnly;
     my @KEYS = qw(bar baz foo);
@@ -57,13 +76,13 @@ foo: foo
     }
 }
 
-my $yaml3 = <<'...';
+my $yaml4 = <<'...';
 --- {}
 ...
 
 {
     tie my %hv, 'Tie::OneIterationOnly';
-    is Dump(\%hv), $yaml3, 'Dumping tied hash works';
+    is Dump(\%hv), $yaml4, 'Dumping tied hash works';
 }
 
 
